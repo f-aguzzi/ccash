@@ -1,12 +1,33 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "ll.h"
 
-int ins_ordered(struct Entry data, struct LL_NODE *head)
+int entrycmp(Entry a, Entry b)
 {
-    struct LL_NODE *t, *p, *prev;
+    if (
+        strcmp(a.date, b.date) == 0 
+        && 
+        a.amount == b.amount
+        &&
+        strcmp(a.cathegory, b.cathegory) == 0
+        &&
+        strcmp(a.shop, b.shop) == 0
+    )
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
 
-    t = malloc(sizeof(struct LL_NODE));
+int ins_ordered(Entry data, LL_NODE *head)
+{
+    LL_NODE *t, *p, *prev;
+
+    t = malloc(sizeof(LL_NODE));
     if (t == NULL)
     {
         fprintf(stderr, "Memory allocation error");
@@ -50,6 +71,11 @@ int ins_ordered(struct Entry data, struct LL_NODE *head)
     p = head->next;
     while (p != NULL)
     {
+        /* Already inserted: skip */
+        if (entrycmp(t->data, p->data) == 0)
+        {
+            return 0;
+        }
         /* Can insert here */
         if (strcmp(data.date, p->data.date) < 0)
         {
@@ -65,4 +91,41 @@ int ins_ordered(struct Entry data, struct LL_NODE *head)
     t->next = NULL;
     return 0;
 
+}
+
+int del_val(LL_NODE a, LL_NODE *head)
+{
+    LL_NODE *p, *q, *prev;
+    
+    /* Check whether list is empty */
+    if (head == NULL)
+    {
+        fprintf(stderr, "Can't delete: empty list");
+    }
+
+    /* Only one element */
+    if (entrycmp(head->data, a.data) == 0)
+    {
+        p = head;
+        head = p->next;
+        free(p);
+        return 0;
+    }
+
+    /* More than one element: find the node */
+    prev = head;
+    p = head->next;
+    while (p != NULL)
+    {
+        if (entrycmp(p->data, a.data) == 0)
+        {
+            prev->next = p->next;
+            free(p);
+            return 0;
+        }
+        p = p->next;
+        prev = prev->next;
+    }
+
+    return 0;
 }
