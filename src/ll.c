@@ -129,3 +129,12 @@ int del_val(LL_NODE a, LL_NODE *head)
 
     return 0;
 }
+
+void debug_list(LL_NODE *head)
+{
+    LL_NODE *cursor = head;
+    while (cursor != NULL) {
+        printf("%s %s %f %s \n", cursor->data.date, cursor->data.shop, cursor->data.amount, cursor->data.cathegory);
+        cursor = cursor->next;
+    }
+}

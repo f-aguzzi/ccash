@@ -13,3 +13,4 @@ typedef struct LL_NODE {
 int entrycmp(Entry, Entry);
 int ins_ordered(Entry, LL_NODE*);
 int del_val(LL_NODE, LL_NODE*);
+void debug_list(LL_NODE*);

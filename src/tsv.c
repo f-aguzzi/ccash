@@ -17,68 +17,55 @@ int tsv_deserialize(LL_NODE *list, char *filename)
         return 0;
     }
 
-    /* Deserialization */
-    char *line;
-    line = malloc(sizeof(char) * 200);
-    fscanf(file, "%s", line);
+    /* Check if schema is correct */
+    char schema[50];
+    fgets(schema, 50, file);
+    if (strcmp(schema, "Date\tShop\tAmount\tCathegory\n") != 0)
+    {
+        printf("%s", schema);
+        fprintf(stderr, "Can't read file: wrong schema");
+        return 0;
+    }
 
-    while (line != NULL)
+    /* Deserialization */
+    char date[50];
+    char shop[50];
+    char amount[50];
+    char cathegory[50];
+
+    int fileread = fscanf(file, "%s\t%s\t%s\t%s", date, shop, amount, cathegory);
+
+    while (fileread != EOF)
     {
         /* Create linked list node */
         LL_NODE *node;
         Entry entry;
 
-        /* Eliminate leading whitespace */
-        int cursor = 0;
-        while ((line[cursor] == ' ' || line[cursor] == '\t') && line[cursor] != '\0')
-        {
-            cursor++;
-        }
-        strncpy(line, &line[cursor], 100 - cursor);
+        /* Convert the line */
+        strcpy(entry.date, date);
+        strcpy(entry.shop, shop);
+        gcvt(entry.amount, 50, amount);
+        strcpy(entry.cathegory, cathegory);
+        
 
-        /* Parse the line */
-        int section = 0;
-        char *token = strtok(line, " \t");
-        while (token != NULL)
-        {
-            if (section == 0)
-            {
-                strcpy(entry.date, token);
-            }
-            else if (section == 1)
-            {
-                strcpy(entry.shop, token);
-            }
-            else if (section == 2)
-            {
-                entry.amount = atof(token);
-            }
-            else if (section == 3)
-            {
-                strcpy(entry.cathegory, token);
-            }
-            else
-            {
-                fprintf(stderr, "Parsing error: invalid schema");
-                return 1;
-            }
-            section++;
-            token = strtok(line, " \t");
-        }
-
+        /* Insert the node in time order */
         int ins = ins_ordered(entry, list);
         if (ins != 0)
         {
             fprintf(stderr, "Error inserting data into list");
             return 1;
         }
+
+        /* Move to next line */
+        fileread = fscanf(file, "%s\t%s\t%s\t%s", date, shop, amount, cathegory);
         
     }
 
-    free(line);
+    /* Close the file and return */
     fclose(file);
     return 0;
 }
+
 
 int tsv_serialize(LL_NODE *head, char *filename)
 {
@@ -93,9 +80,13 @@ int tsv_serialize(LL_NODE *head, char *filename)
 
     LL_NODE *p = head;
 
+    /* Write heading */
+    fprintf(file, "%s", "Date\tShop\tAmount\tCathegory\n");
+
     while (p != NULL)
     {
         char buf[200];
+        buf[0] = '\0';
 
         /* Stringify the struct fields, separate by tab */
 
@@ -108,13 +99,18 @@ int tsv_serialize(LL_NODE *head, char *filename)
         strcat(buf, "\t");
 
         /* Amount */
-        char num_buf[10];
-        gcvt(p->data.amount, 9, num_buf);
+        char num_buf[20];
+        sprintf(num_buf,"%f", p->data.amount);
         strcat(buf, num_buf);
         strcat(buf, "\t");
 
         /* Cathegory */
         strcat(buf, p->data.cathegory);
+
+        /* If it's not the last line, add a line feed */
+        if (p->next != NULL) {
+            strcat(buf, "\n");
+        }
 
         /* Write line to file */
         fprintf(file, "%s", buf);
