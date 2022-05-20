@@ -20,7 +20,7 @@ int tsv_deserialize(LL_NODE *list, char *filename)
     /* Check if schema is correct */
     char schema[50];
     fgets(schema, 50, file);
-    if (strcmp(schema, "Date\tShop\tAmount\tCathegory\n") != 0)
+    if (strcmp(schema, "Date\tShop\tProduct name\tAmount\tCathegory\n") != 0)
     {
         printf("%s", schema);
         fprintf(stderr, "Can't read file: wrong schema");
@@ -30,10 +30,11 @@ int tsv_deserialize(LL_NODE *list, char *filename)
     /* Deserialization */
     char date[50];
     char shop[50];
+    char product_name[30];
     char amount[50];
     char cathegory[50];
 
-    int fileread = fscanf(file, "%s\t%s\t%s\t%s", date, shop, amount, cathegory);
+    int fileread = fscanf(file, "%s\t%s\t%s\t%s\t%s", date, shop, product_name, amount, cathegory);
 
     while (fileread != EOF)
     {
@@ -44,6 +45,7 @@ int tsv_deserialize(LL_NODE *list, char *filename)
         /* Convert the line */
         strcpy(entry.date, date);
         strcpy(entry.shop, shop);
+        strcpy(entry.product_name, product_name);
         gcvt(entry.amount, 50, amount);
         strcpy(entry.cathegory, cathegory);
         
@@ -57,7 +59,7 @@ int tsv_deserialize(LL_NODE *list, char *filename)
         }
 
         /* Move to next line */
-        fileread = fscanf(file, "%s\t%s\t%s\t%s", date, shop, amount, cathegory);
+        fileread = fscanf(file, "%s\t%s\t%s\t%s\t%s", date, shop, product_name, amount, cathegory);
         
     }
 
@@ -81,7 +83,7 @@ int tsv_serialize(LL_NODE *head, char *filename)
     LL_NODE *p = head;
 
     /* Write heading */
-    fprintf(file, "%s", "Date\tShop\tAmount\tCathegory\n");
+    fprintf(file, "%s", "Date\tShop\tProduct name\tAmount\tCathegory\n");
 
     while (p != NULL)
     {
@@ -96,6 +98,10 @@ int tsv_serialize(LL_NODE *head, char *filename)
 
         /* Shop name */
         strcat(buf, p->data.shop);
+        strcat(buf, "\t");
+
+        /* Product name */
+        strcat(buf, p->data.product_name);
         strcat(buf, "\t");
 
         /* Amount */

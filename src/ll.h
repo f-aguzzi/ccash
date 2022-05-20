@@ -1,6 +1,7 @@
 typedef struct Entry {
     char date[11];
     char shop[50];
+    char product_name[30];
     float amount;
     char cathegory[30];
 } Entry;

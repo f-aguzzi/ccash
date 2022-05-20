@@ -1,4 +1,4 @@
-Date	Shop	Amount	Cathegory
-2020-11-12	Shop_1	123.300003	Various
-2021-10-32	Shop_2	11.320000	Food
-2018-04-03	Shop_3	55.900002	Clothes
+Date	Shop	Product name	Amount	Cathegory
+2020-11-12	Shop_1  Vitello_domestico	123.300003	Various
+2021-10-32	Shop_2  806_zampe	11.320000	Food
+2018-04-03	Shop_3 quaranta_due	55.900002	Clothes
