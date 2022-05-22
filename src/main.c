@@ -88,6 +88,24 @@ int main()
         attron(A_STANDOUT);
         printw("See checks");
         attroff(A_STANDOUT);
+
+        /* Navigate the list */
+        LL_NODE *p = head;
+        while (p != NULL)
+        {
+            printw("\n");
+            attron(A_BOLD);
+            printw("%s %s\n", p->data.date, p->data.shop);
+            attroff(A_BOLD);
+            printw("Date: %s\n", p->data.date);
+            printw("Product: %s\n", p->data.product_name);
+            printw("Shop: %s\n", p->data.shop);
+            printw("Price: %s\n", p->data.amount);
+            printw("Cathegory: %s\n", p->data.cathegory);
+
+            p = p->next;
+        }
+
     }
     /* Error message */
     else
