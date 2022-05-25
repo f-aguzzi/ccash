@@ -1,7 +1,26 @@
-#include <stdlib.h>
-#include <stdio.h>
+/* string library */
+#ifndef STRING
+#define STRING
 #include <string.h>
+#endif
+
+/* standard IO library */
+#ifndef STDIO
+#define STDIO
+#include <stdio.h>
+#endif
+
+/* standard library */
+#ifndef STDLIB
+#define STDLIB
+#include <stdlib.h>
+#endif
+
+/* tsv header file */
+#ifndef TSV_H
+#define TSV_H
 #include "tsv.h"
+#endif
 
 int tsv_deserialize(LL_NODE *list, char *filename)
 {

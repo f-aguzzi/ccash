@@ -1,6 +1,26 @@
-#include "ll.h"
+/* string library */
+#ifndef STRING
+#define STRING
 #include <string.h>
+#endif
+
+/* linked list header */
+#ifndef LL_H
+#define LL_H
+#include "ll.h"
+#endif
+
+/* ncurses library */
+#ifndef NCURSES
+#define NCURSES
 #include <ncurses.h>
+#endif
+
+/* ui header */
+#ifndef UI_H
+#define UI_H
+#include "ui.h"
+#endif
 
 void main_menu(WINDOW *w)
 {

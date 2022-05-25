@@ -1,7 +1,26 @@
+/* standard library */
+#ifndef STDLIB
+#define STDLIB
 #include <stdlib.h>
+#endif
+
+/* standard IO library */
+#ifndef STDIO
+#define STDIO
 #include <stdio.h>
+#endif
+
+/* string library */
+#ifndef STRING
+#define STRING
 #include <string.h>
+#endif
+
+/* linked list header */
+#ifndef LL_H
+#define LL_H
 #include "ll.h"
+#endif
 
 int entrycmp(Entry a, Entry b)
 {
